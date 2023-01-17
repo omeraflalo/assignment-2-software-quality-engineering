@@ -24,15 +24,15 @@ public class RunCucumberTest {
     private String path = "C:\\Users\\omer aflalo\\Documents\\אוניברסיטה\\עבודה 3 בהנדסת איכות תוכנה\\assignment-2-software-quality-engineering\\Selenium\\chromedriver.exe";
 
     public RunCucumberTest() {
-//        user = new OpenCartActuator();
-//        user.initSession(webDriver, path,"");
-        admin = new OpenCartActuator();
-        admin.initSession(webDriver, path,"/admin");
+        user = new OpenCartActuator();
+        user.initSession(webDriver, path,"");
+//        admin = new OpenCartActuator();
+//        admin.initSession(webDriver, path,"/admin/index.php?route=marketing/coupon");
     }
 
     public void addCuponAndMannagerDelete() {
-//        user.addItemToCart();
-        admin.enterLoginInfo(ADMIN_USERNAME,ADMIN_PASSWORD);
+        user.addItemToCart();
+//        admin.enterLoginInfo(ADMIN_USERNAME,ADMIN_PASSWORD);
     }
 }
 

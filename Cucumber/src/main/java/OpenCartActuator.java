@@ -4,6 +4,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class OpenCartActuator {
@@ -44,13 +45,17 @@ public class OpenCartActuator {
         System.out.println("Driver setup finished for - " + driver.getTitle());
     }
 
+    public void waitMiliseconds(int mili){
+        try {
+            TimeUnit.MILLISECONDS.sleep(mili);
+        } catch (Exception e) {
+        }
+
+    }
     public void addItemToCart() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/main/div[2]/div/div/div[2]/div[1]/form/div/div[1]/a/img"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/main/div[2]/div/div/div[1]/div[2]/div[1]/form/div/button"))).click();
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (Exception e) {
-        }
+        waitMiliseconds(1000);
         driver.get("http://localhost/opencartpro/index.php?route=checkout/cart&language=en-gb");
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/main/div[2]/div/div/div[2]/div[1]/h2/button"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/main/div[2]/div/div/div[2]/div[1]/div/div/form/div[1]/div/input"))).sendKeys("1111");
@@ -64,12 +69,37 @@ public class OpenCartActuator {
 
 
     }
+
+    public WebElement findSpecificCoupon(List<WebElement> tbody, String id){
+        for(int i =0; i< tbody.size(); i++){
+            WebElement tr = tbody.get(i);
+            if(tr.findElements(By.xpath("./child::*")).get(2).getText().equals(id)){
+                return tr;
+            }
+        }
+        return null;
+    }
     public void enterLoginInfo(String username, String password) {
+        //----------------------------------------------- Start login --------------------------------------------------------
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div/div/div/div/div[2]/form/div[1]/div/input"))).sendKeys(username);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//html/body/div/div[2]/div/div/div/div/div[2]/form/div[2]/div[1]/input"))).sendKeys(password);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div/div[2]/div/div/div/div/div[2]/form/div[3]/button"))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[1]/nav/ul/li[7]/a"))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[1]/nav/ul/li[7]/ul/li[3]/a"))).click();
+        //----------------------------------------------- Delete specific coupon --------------------------------------------------------
+        waitMiliseconds(1000);
+        WebElement tbody = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div/div[2]/form/div[1]/table/tbody"));
+        List<WebElement> allCoupons = tbody.findElements(By.xpath("./child::*"));
+        WebElement coupon = findSpecificCoupon(allCoupons, "1111");
+        if(coupon == null){
+            System.out.println("coupon not found");
+            return;
+        }
+        coupon.findElements(By.xpath("./child::*")).get(0).findElements(By.xpath("./child::*")).get(0).click();
+
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div/div[2]/div[2]/div/div[2]/form/div[1]/table/tbody/tr[2]/td[1]/input"))).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div/div[2]/div[1]/div/div/button"))).click();
+//        //----------------------------------------------- Press enter on popup --------------------------------------------------------
+//        waitMiliseconds(1000);
+//        driver.findElement(By.id("Value")).sendKeys(Keys.RETURN);
 
     }
     public void managerDeleteCopun() {
