@@ -15,6 +15,8 @@ public class OpenCartActuator {
     private WebDriver driver;
     private WebDriverWait wait;
 
+    private int waitingMil = 200;
+
 
     public OpenCartActuator(String webDriver, String path, String webPath) {
         System.setProperty(webDriver, path);
@@ -25,7 +27,7 @@ public class OpenCartActuator {
         System.out.println("Driver setup finished for - " + driver.getTitle());
     }
 
-    public void waitMiliseconds(int mili) {
+    public void waitMilliseconds(int mili) {
         try {
             TimeUnit.MILLISECONDS.sleep(mili);
         } catch (Exception e) {
@@ -34,10 +36,10 @@ public class OpenCartActuator {
 
     public void addItemToCart() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"content\"]/div[2]/div[1]/form/div/div[1]/a/img"))).click();
-        waitMiliseconds(300);
+        waitMilliseconds(waitingMil);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"button-cart\"]"))).click();
+        waitMilliseconds(waitingMil);
         driver.get("http://localhost/opencartpro/index.php?route=checkout/cart&language=en-gb");
-        waitMiliseconds(300);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"accordion\"]/div[1]/h2/button"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"input-coupon\"]"))).sendKeys("1111");
 
@@ -45,7 +47,7 @@ public class OpenCartActuator {
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click();", element);
 
-
+        executor.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.xpath("//*[@id=\"shopping-cart\"]/div/table/thead/tr/td[1]")));
     }
 
     public WebElement findSpecificCoupon(List<WebElement> tbody, String id) {
@@ -77,18 +79,18 @@ public class OpenCartActuator {
     public void loginManager(String username, String password) {
         //----------------------------------------------- Start login --------------------------------------------------------
         driver.get("http://localhost/opencartpro/admin/index.php?route=marketing/coupon");
-        waitMiliseconds(300);
+        waitMilliseconds(waitingMil);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"input-username\"]"))).sendKeys(username);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"input-password\"]"))).sendKeys(password);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"form-login\"]/div[3]/button"))).click();
-        waitMiliseconds(300);
+        waitMilliseconds(waitingMil);
 
     }
 
     public void managerDeleteCoupun(String username, String password, String couponId) {
         loginManager(username, password);
         //----------------------------------------------- Delete specific coupon --------------------------------------------------------
-        waitMiliseconds(300);
+        waitMilliseconds(waitingMil);
         WebElement tbody = driver.findElement(By.xpath("//*[@id=\"form-coupon\"]/div[1]/table/tbody"));
         List<WebElement> allCoupons = tbody.findElements(By.xpath("./child::*"));
         WebElement coupon = findSpecificCoupon(allCoupons, couponId);
@@ -106,10 +108,11 @@ public class OpenCartActuator {
     }
 
     public void tryCheckOut() {
-        waitMiliseconds(300);
+        waitMilliseconds(waitingMil);
 //        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"content\"]/div[3]/div[2]/a"))).click();
         WebElement element = driver.findElement(By.xpath("//*[@id=\"content\"]/div[3]/div[2]/a"));
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click();", element);
+        executor.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.xpath("//*[@id=\"form-register\"]/fieldset[1]/legend")));
     }
 }
