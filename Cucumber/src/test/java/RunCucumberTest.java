@@ -12,27 +12,25 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 
 
 public class RunCucumberTest {
-    private String TEACHER_USERNAME = "teacher";
-    private String TEACHER_PASSWORD = "Teacher1995$";
-    private String COURSE_NAME = "Demo course";
     private String ADMIN_USERNAME = "admin";
     private String ADMIN_PASSWORD = "12345";
-    private int DEFAULT_LENGTH = 5;
+    private String couponId = "1111";
     private OpenCartActuator user;
     private OpenCartActuator admin;
     private String webDriver = "webdriver.chrome.driver";
     private String path = "C:\\Users\\omer aflalo\\Documents\\אוניברסיטה\\עבודה 3 בהנדסת איכות תוכנה\\assignment-2-software-quality-engineering\\Selenium\\chromedriver.exe";
 
     public RunCucumberTest() {
-        user = new OpenCartActuator();
-        user.initSession(webDriver, path,"");
-//        admin = new OpenCartActuator();
-//        admin.initSession(webDriver, path,"/admin/index.php?route=marketing/coupon");
+        new OpenCartActuator(webDriver, path, "").managerCheckCouponExist(ADMIN_USERNAME, ADMIN_PASSWORD,couponId );
+        user = new OpenCartActuator(webDriver, path, "");
+        user.addItemToCart();
+        admin = new OpenCartActuator(webDriver, path, "/admin/index.php?route=marketing/coupon");
+        admin.managerDeleteCoupun(ADMIN_USERNAME, ADMIN_PASSWORD, couponId);
+        user.tryCheckOut();
     }
 
     public void addCuponAndMannagerDelete() {
-        user.addItemToCart();
-//        admin.enterLoginInfo(ADMIN_USERNAME,ADMIN_PASSWORD);
+
     }
 }
 
