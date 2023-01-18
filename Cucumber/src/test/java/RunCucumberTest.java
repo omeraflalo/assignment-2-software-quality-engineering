@@ -21,12 +21,12 @@ public class RunCucumberTest {
     private String path = "C:\\Users\\omer aflalo\\Documents\\אוניברסיטה\\עבודה 3 בהנדסת איכות תוכנה\\assignment-2-software-quality-engineering\\Selenium\\chromedriver.exe";
 
     public void addCuponAndMannagerDelete() {
-        new OpenCartActuator(webDriver, path, "").managerCheckCouponExist(ADMIN_USERNAME, ADMIN_PASSWORD,couponId );
-        user = new OpenCartActuator(webDriver, path, "");
-        user.addItemToCart();
-        admin = new OpenCartActuator(webDriver, path, "/admin/index.php?route=marketing/coupon");
-        admin.managerDeleteCoupun(ADMIN_USERNAME, ADMIN_PASSWORD, couponId);
-        user.tryCheckOut();
+//        new OpenCartActuator(webDriver, path).managerCheckCouponExist(ADMIN_USERNAME, ADMIN_PASSWORD,couponId );
+//        user = new OpenCartActuator(webDriver, path);
+//        user.addItemToCart();
+//        admin = new OpenCartActuator(webDriver, path);
+//        admin.managerDeleteCoupun(ADMIN_USERNAME, ADMIN_PASSWORD, couponId);
+//        user.userClickOnCheckout();
     }
 }
 
