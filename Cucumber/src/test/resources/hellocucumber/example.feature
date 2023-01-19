@@ -31,14 +31,15 @@ Feature: A set of scenarios for testing the "example" module
     And User navigate to his cart
     And User apply coupon
     And Coupon added to cart
-    And User click on checkout
     And Admin in home page
     And Admin navigate to coupons managing
     And Admin logging in
     And Admin select the specific coupon
     And Admin delete coupon
     And Coupon deleted
+    And User click on checkout
     Then Coupon not available in checkout Page
     And Close user
     And Close admin
+
 
