@@ -79,8 +79,7 @@ public class OpenCartActuator {
 
     public WebElement findSpecificCoupon(String id) {
         waitMilliseconds(waitingMil);
-        WebElement tbody = driver.findElement(By.xpath("//*[@id=\"form-coupon\"]/div[1]/table/tbody"));
-        List<WebElement> allCoupons = tbody.findElements(By.xpath("./child::*"));
+        List<WebElement> allCoupons = driver.findElements(By.xpath("//*[@id=\"form-coupon\"]/div[1]/table/tbody/./child::*"));
         for (WebElement tr : allCoupons) {
             if (tr.findElements(By.xpath("./child::*")).get(2).getText().equals(id)) {
                 return tr;
